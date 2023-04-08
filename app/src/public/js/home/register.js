@@ -1,18 +1,24 @@
 "use strict";
 
 const id = document.querySelector("#id"),
+name = document.querySelector("#name"),
 pw = document.querySelector("#psword"),
-loginBtn = document.querySelector("#button");
+confirmPw = document.querySelector("#confirm-psword"),
+registerBtn = document.querySelector("#button");
 
-loginBtn.addEventListener("click", login);
+registerBtn.addEventListener("click", register);
 
-function login(){
+function register(){
+    if(!id.value) { return alert("id not written"); }
+    if(pw.value != confirmPw.value){ return alert("password not confirmed"); }
     const req = {
         id: id.value,
+        name: name.value,
         psword: psword.value,
     };
+    console.log(req);
     
-    fetch("/login", {
+    fetch("/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -22,12 +28,12 @@ function login(){
         .then((res) => res.json())
         .then((res) => {
             if (res.success){
-                location.href = "/";
+                location.href = "/login";
             } else{
                 alert(res.msg);
             }
         })
         .catch((err) => {
-            console.error(new Error("error in login process"));
+            console.error(new Error("error in register process"));
         });
 }
